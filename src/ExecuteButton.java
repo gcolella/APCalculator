@@ -6,16 +6,11 @@ import java.awt.event.MouseListener;
 
 import javax.swing.JButton;
 
-public class NumberButton extends JButton implements MouseListener
+public class ExecuteButton extends JButton implements MouseListener
 	{
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -7922128829745580948L;
-
 		private OutDisplay out;
 		String txt;
-		public NumberButton(String text, OutDisplay out){
+		public ExecuteButton(String text, OutDisplay out){
 			super(text);
 			setFont(new Font("Dialog",Font.PLAIN,30));
 			txt = text;
@@ -24,7 +19,7 @@ public class NumberButton extends JButton implements MouseListener
 		}
 		@Override
 		public void mousePressed(MouseEvent arg0) {
-			out.add(txt);
+			out.execute();
 		}
 		@Override
 		public void mouseEntered(MouseEvent arg0) {}

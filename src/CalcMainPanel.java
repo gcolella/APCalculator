@@ -31,22 +31,45 @@ public class CalcMainPanel {
 	public static void addComponents(JFrame frame){
 		Container stuff = frame.getContentPane();
 		stuff.setLayout(new GridBagLayout());
+		
+		//===set up gridbag===
 		GridBagConstraints loc = new GridBagConstraints();
 		loc.fill = GridBagConstraints.BOTH;
 		loc.weightx = .5;
 		loc.weighty = .5;
 		loc.gridx = 0;
-		loc.gridy = 0;
+		loc.gridx = 0;
+		//=====================
+		
+		//===init the screen panel
+		loc.gridy = 1;
 		JPanel screenPanel = new JPanel(new BorderLayout());
 		OutDisplay screen = new OutDisplay();
 		stuff.add(screenPanel,loc);
-		loc.gridy = 1;
-		stuff.add(makeNumberPanel(screen),loc);
+		screenPanel.add(screen.getLabel(),BorderLayout.CENTER);
+		//===================
 		
+		//===make the number button panel
+		loc.gridy = 2;
+		stuff.add(makeNumberPanel(screen),loc);
+		//=====================
+		
+		//===make the calc button panel
+		loc.weightx = .1;
 		loc.gridx = 1;
 		stuff.add(makeCalcPanel(screen),loc);
-		
-		screenPanel.add(screen.getLabel(),BorderLayout.CENTER);
+		//===================
+
+		//===make the menu bar and add it
+		frame.setJMenuBar(makeMenuBar());
+	}
+	public static JMenuBar makeMenuBar(){
+		JMenuBar menubar = new JMenuBar();
+		JMenu test = new JMenu("Test");
+		menubar.add(test);
+		JMenuItem test2 = new JMenuItem("Test2");
+		test.add(test2);
+		return menubar;
 	}
 	public static JPanel makeCalcPanel(OutDisplay out){
 		JPanel calcPanel = new JPanel(new GridBagLayout());
@@ -63,6 +86,9 @@ public class CalcMainPanel {
 		calcPanel.add(new NumberButton("*",out),loc);
 		loc.gridy++;
 		calcPanel.add(new NumberButton("/",out),loc);
+		loc.gridy++;
+		calcPanel.add(new ExecuteButton("=",out),loc);
+		
 		
 		return calcPanel;
 	}
@@ -80,6 +106,9 @@ public class CalcMainPanel {
 				numberPanel.add(new NumberButton(""+num,out),loc);
 			}
 		}
+		loc.gridy++;
+		loc.gridx = 1;
+		numberPanel.add(new NumberButton(""+0,out),loc);
 		
 		return numberPanel;
 	}

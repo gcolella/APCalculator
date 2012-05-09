@@ -12,7 +12,7 @@ public class OutDisplay
 	private Label mylabel;
 	private ArrayList<String> lines;
 	private boolean shouldrun;
-	
+	private boolean shouldclear;
 	
 	public OutDisplay(){
 		lines = new ArrayList<String>();
@@ -26,12 +26,14 @@ public class OutDisplay
 		return mylabel;
 	}
 	public void updateLabel(){
-		while(lines.size()>5)
+		while(lines.size()>10)
 			lines.remove(lines.size()-1);
 		mylabel.setText(lines.get(0));
 	}
 
 	public void add(String s){
+		if(shouldclear)
+			clearLine();
 		setCurrentLine(currentLine().concat(s));
 		updateLabel();
 	}
@@ -54,6 +56,15 @@ public class OutDisplay
 	public void goBack(){
 		lines.remove(0);
 	}
+	public void clearLine(){
+		lines.add(0,"");
+		shouldclear = false;
+	}
+	public void execute(){
+		add("="+Calculator.result(currentLine()));
+		shouldclear = true;
+	}
+	
 	
 	
 	
