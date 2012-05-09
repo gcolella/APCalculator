@@ -1,22 +1,24 @@
 
 
-import java.awt.Button;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
-public class NumberButton implements MouseListener
+import javax.swing.JButton;
+
+public class NumberButton extends JButton implements MouseListener
 	{
-		private Button mybutton;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -7922128829745580948L;
+
 		private OutDisplay out;
 		String txt;
 		public NumberButton(String text, OutDisplay out){
+			super(text);
 			txt = text;
-			mybutton = new Button(text);
-			mybutton.addMouseListener(this);
+			addMouseListener(this);
 			this.out = out;
-		}
-		public Button getButton(){
-			return mybutton;
 		}
 		@Override
 		public void mousePressed(MouseEvent arg0) {

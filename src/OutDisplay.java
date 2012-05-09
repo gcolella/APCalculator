@@ -1,5 +1,6 @@
 
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Label;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -16,8 +17,9 @@ public class OutDisplay
 	public OutDisplay(){
 		lines = new ArrayList<String>();
 		lines.add("");
-		mylabel = new Label("hi");
-		mylabel.setPreferredSize(new Dimension(100,10));
+		mylabel = new Label("0");
+		mylabel.setFont(new Font("Dialog",Font.PLAIN,30));
+		mylabel.setAlignment(Label.RIGHT);
 
 	}
 	public Label getLabel(){
@@ -51,8 +53,10 @@ public class OutDisplay
 	}
 	public void goBack(){
 		lines.remove(0);
-		
 	}
+	
+	
+	
 	public void end(){
 		shouldrun = false;
 	}
