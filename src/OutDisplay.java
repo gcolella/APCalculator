@@ -1,4 +1,3 @@
-package com.gcolella.APCalculator;
 
 import java.awt.Dimension;
 import java.awt.Label;
