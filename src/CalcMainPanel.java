@@ -43,10 +43,13 @@ public class CalcMainPanel {
 		
 		//===init the screen panel
 		loc.gridy = 1;
+		loc.gridwidth = GridBagConstraints.REMAINDER;
 		JPanel screenPanel = new JPanel(new BorderLayout());
 		OutDisplay screen = new OutDisplay();
 		stuff.add(screenPanel,loc);
 		screenPanel.add(screen.getLabel(),BorderLayout.CENTER);
+		screenPanel.setBackground(Color.WHITE);
+		loc.gridwidth = 1;
 		//===================
 		
 		//===make the number button panel

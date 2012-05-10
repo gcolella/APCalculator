@@ -24,10 +24,17 @@ public class Calculator {
 		
 	return out;
 	}
+	public static String fixDoubleNeg(String s)
+	{
+		for(int i=1;i<s.length();i++)
+			if(s.substring(i-1,i+1).equals("--"))
+				s = s.substring(0,i-1)+"+"+s.substring(i+1);
+		return s;
+	}
 	public static String fixMinus(String s)
 	{
 		for(int i=1;i<s.length();i++){
-			if(s.substring(i,i+1).equals("-") && !hasOps(s.substring(i-1,i)))
+			if(s.substring(i,i+1).equals("-") && !(hasOps(s.substring(i-1,i))))
 				s = s.substring(0,i)+"+"+s.substring(i);
 		}
 		return s;
@@ -50,7 +57,8 @@ public class Calculator {
 	
 	public static String result(String s)
 	{
-		s = fix(fixMinus(s));
+		s = fix(fixMinus(fixDoubleNeg(s)));
+		System.out.println("postfix: "+s);
 		ArrayList<Double> numbers = getNumbers(s);
 		ArrayList<Operator> ops = getOps(s);
 		
