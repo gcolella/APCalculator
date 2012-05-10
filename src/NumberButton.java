@@ -1,30 +1,26 @@
 
 
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
 import javax.swing.JButton;
 
-public class NumberButton extends JButton implements MouseListener
+public class NumberButton extends MiscButton implements MouseListener
 	{
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -7922128829745580948L;
 
-		private OutDisplay out;
-		String txt;
-		public NumberButton(String text, OutDisplay out){
-			super(text);
-			setFont(new Font("Dialog",Font.PLAIN,30));
-			txt = text;
-			addMouseListener(this);
-			this.out = out;
+
+		public NumberButton(String text, OutDisplay out, Color clr){
+			super(text,out,clr);
 		}
 		@Override
 		public void mousePressed(MouseEvent arg0) {
-			out.add(txt);
+			getOut().add(txt);
 		}
 		@Override
 		public void mouseEntered(MouseEvent arg0) {}

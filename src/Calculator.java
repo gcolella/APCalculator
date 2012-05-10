@@ -5,7 +5,7 @@ public class Calculator {
 	
 
 	public static enum Operator{
-		PLUS ("+",1),TIMES ("*",2),DIVIDE ("/",3);
+		PLUS ("+",1),TIMES ("*",2),DIVIDE ("/",3),LEFT ("(",10),RIGHT (")",11);
 		
 		private String key;
 		private int num;

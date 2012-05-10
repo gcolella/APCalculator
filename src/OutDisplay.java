@@ -9,14 +9,17 @@ import javax.swing.SwingUtilities;
 
 public class OutDisplay
 {
+	
+	
 	private Label mylabel;
-	private ArrayList<String> lines;
-	private boolean shouldrun;
-	private boolean shouldclear;
+	private String line;
+	public boolean shouldclear;
+	private Operation currentop;
+	private double second;
+	private double first;
 	
 	public OutDisplay(){
-		lines = new ArrayList<String>();
-		lines.add("");
+		line = "";
 		mylabel = new Label("0");
 		mylabel.setFont(new Font("Dialog",Font.PLAIN,30));
 		mylabel.setAlignment(Label.RIGHT);
@@ -26,9 +29,7 @@ public class OutDisplay
 		return mylabel;
 	}
 	public void updateLabel(){
-		while(lines.size()>10)
-			lines.remove(lines.size()-1);
-		mylabel.setText(lines.get(0));
+		mylabel.setText(line);
 	}
 
 	public void add(String s){
@@ -38,39 +39,43 @@ public class OutDisplay
 		updateLabel();
 	}
 	public String currentLine(){
-		return getLine(0);
+		return line;
 	}
 	public void setCurrentLine(String s){
-		setLine(s,0);
-	}
-	public void setLine(String s, int i){
-		lines.set(i,s);
-	}
-	public String getLine(int i){
-		return lines.get(i);
+		line = s;
 	}
 	public void backspace(){
 		String current = currentLine();
-		setCurrentLine(current.substring(0, current.length()-2));
-	}
-	public void goBack(){
-		lines.remove(0);
+		setCurrentLine(current.substring(0, current.length()-1));
+		updateLabel();
 	}
 	public void clearLine(){
-		lines.add(0,"");
+		line = "";
 		shouldclear = false;
+		updateLabel();
 	}
 	public void execute(){
-		add("="+Calculator.result(currentLine()));
+		second = Double.parseDouble(line);
+		line = ""+currentop.apply(first, second);
+		updateLabel();
 		shouldclear = true;
 	}
-	
-	
-	
-	
-	public void end(){
-		shouldrun = false;
+	public void clear(){
+		clearLine();
+	}
+	public void negate(){
+		if(line.startsWith("-"))
+			line = line.substring(1);
+		else
+			line = "-"+line;
+		updateLabel();
 	}
 	
+	
+	public void storeOperation(Operation o){
+		first = Double.parseDouble(line);
+		clear();
+		currentop = o;
+	}
 	
 }	

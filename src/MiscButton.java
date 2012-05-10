@@ -7,23 +7,26 @@ import java.awt.event.MouseListener;
 
 import javax.swing.JButton;
 
-public class ExecuteButton extends JButton implements MouseListener
+public class MiscButton extends JButton implements MouseListener
 	{
+		/**
+	 * 
+	 */
+	private static final long serialVersionUID = -7480031113595412616L;
 		private OutDisplay out;
 		String txt;
-		public ExecuteButton(String text, OutDisplay out, Color clr){
+		public MiscButton(String text, OutDisplay out, Color clr){
 			super(text);
-			setForeground(clr);
 			setFont(new Font("Dialog",Font.PLAIN,30));
+			setForeground(clr);
 			txt = text;
 			addMouseListener(this);
 			this.out = out;
 		}
-		@Override
-		public void mousePressed(MouseEvent arg0) {
-			out.execute();
+		public OutDisplay getOut(){
+			return out;
 		}
-
+		public void mousePressed(MouseEvent arg0){}
 		@Override
 		public void mouseEntered(MouseEvent arg0) {}
 		@Override
