@@ -7,9 +7,11 @@ import java.awt.event.MouseListener;
 import java.awt.*;
 
 import javax.swing.JButton;
+import javax.swing.JFrame;
 
 public class MiscButton extends JButton implements MouseListener
 	{
+	static JFrame focusFrame;
 		/**
 	 * 
 	 */
@@ -28,7 +30,13 @@ public class MiscButton extends JButton implements MouseListener
 		public OutDisplay getOut(){
 			return out;
 		}
-		public void mousePressed(MouseEvent arg0){}
+		public void mousePressed(MouseEvent arg0){
+			MiscButton.focusFrame.requestFocus();
+		}
+		public void focus()
+		{
+			MiscButton.focusFrame.requestFocus();
+		}
 		@Override
 		public void mouseEntered(MouseEvent arg0) {}
 		@Override
@@ -38,5 +46,7 @@ public class MiscButton extends JButton implements MouseListener
 		@Override
 		public void mouseReleased(MouseEvent arg0) {}
 		
-		
+		public static void setFocusFrame(JFrame in){
+			focusFrame = in;
+		}
 	}

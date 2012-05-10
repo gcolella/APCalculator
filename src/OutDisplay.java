@@ -4,13 +4,16 @@ import java.awt.Font;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.awt.Color;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 
 
 import javax.swing.SwingUtilities;
 
-public class OutDisplay
+public class OutDisplay implements KeyListener
 {
 	
 	private JLabel memorylabel;
@@ -61,9 +64,11 @@ public class OutDisplay
 		shouldclear = true;
 	}
 	public void memPlus(){
-		memory+=Double.parseDouble(line);
-		shouldclear = true;
+
+		memory = memory+Double.parseDouble(line);
 		setMemory(true);
+		shouldclear = true;
+
 	}
 	
 	public void add(String s){
@@ -116,9 +121,53 @@ public class OutDisplay
 		currentop = o;
 	}
 	public void setMemory(boolean mem){
-	memorylabel.setText(mem?"M":" ");
-	
-	
+	memorylabel.setText((mem?"M":" "));
+	}
+	@Override
+	public void keyTyped(KeyEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void keyReleased(KeyEvent arg0) {}
+	@Override
+	public void keyPressed(KeyEvent arg0) {
+	String key = arg0.getKeyChar()+"";
+		if(isValid(key))
+		{
+			add(key);
+			return;
+		}
+	if(key.equals("*"))
+		storeOperation(new Operation(){
+					public double apply(double a, double b) {
+						// TODO Auto-generated method stub
+						return a*b;
+					}});
+	if(key.equals("+"))
+		storeOperation(new Operation(){
+			public double apply(double a, double b) {
+				// TODO Auto-generated method stub
+				return a+b;
+			}});
+	if(key.equals("-"))
+		storeOperation(new Operation(){
+			public double apply(double a, double b) {
+				// TODO Auto-generated method stub
+				return a-b;
+			}});
+	if(key.equals("/"))
+		storeOperation(new Operation(){
+			public double apply(double a, double b) {
+				// TODO Auto-generated method stub
+				return a/b;
+			}});
+	if(arg0.getKeyCode() == KeyEvent.VK_ENTER)
+		execute();
+	}
+	public boolean isValid(String s){
+		String valids = "123456789890.";
+		return valids.indexOf(s)!=-1;
 	}
 	
 }	

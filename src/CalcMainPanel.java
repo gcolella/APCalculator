@@ -18,11 +18,17 @@ import java.util.ArrayList;
 import javax.swing.*;
 
 public class CalcMainPanel {
+	static OutDisplay screen = new OutDisplay();
 	public static void main(String[] args){
 	setUITheme();
 	JFrame theframe = setupFrame();
+	MiscButton.setFocusFrame(theframe);
 	theframe.setResizable(false);
+	theframe.setFocusable(true);
+	theframe.addKeyListener(screen);
 	theframe.setVisible(true);
+	theframe.requestFocus();
+	
 	}
 	public static void setUITheme(){
 			try {
@@ -68,7 +74,6 @@ public class CalcMainPanel {
 		loc.gridy = 0;
 		loc.gridwidth = GridBagConstraints.REMAINDER;
 		JPanel screenPanel = new JPanel(new BorderLayout());
-		OutDisplay screen = new OutDisplay();
 		stuff.add(screenPanel,loc);
 		screenPanel.add(screen.getLabel(),BorderLayout.CENTER);
 		screenPanel.setBackground(Color.WHITE);
@@ -129,23 +134,7 @@ public class CalcMainPanel {
 		
 		return menubar;
 	}
-	public static JPanel makeLeftPanel(OutDisplay out){
-		GridPanel leftpanel = new GridPanel();
-		GridBagConstraints loc = new GridBagConstraints();
-		leftpanel.setWeights(.5, .5);
-		leftpanel.setInsets(new Insets(5,0,5,5));
-		MiscButton memclear = new MiscButton("MC",out,Color.red) {
-		};
-		MiscButton memR = new MiscButton("MR",out,Color.red){};
-		MiscButton memS = new MiscButton("MS",out,Color.red){};
-		MiscButton memPlus = new MiscButton("M+",out,Color.red){};
-		leftpanel.add(memclear,0,0);
-		leftpanel.add(memR,0,1);
-		leftpanel.add(memS,0,2);
-		leftpanel.add(memPlus,0,3);
-		return leftpanel;
-		
-	}
+
 	public static JPanel makeUtilPanel(OutDisplay out){
 		GridPanel utilpanel = new GridPanel();
 		utilpanel.setWeights(.5, .5);
@@ -164,6 +153,7 @@ public class CalcMainPanel {
 		MiscButton clear = new MiscButton("C",out,Color.red) {
 			public void mousePressed(MouseEvent e){
 				getOut().clear();
+				focus();
 			}
 		};
 		utilpanel.add(clear,utilpanel.nextX(),0);
@@ -171,6 +161,7 @@ public class CalcMainPanel {
 		MiscButton clearE = new MiscButton("CE",out,Color.red) {
 			public void mousePressed(MouseEvent e){
 				getOut().clearLine();
+				focus();
 			}
 		};
 		
@@ -189,20 +180,28 @@ public class CalcMainPanel {
 		MiscButton memclear = new MiscButton("MC",out,Color.red) {
 			public void mousePressed(MouseEvent e){
 				getOut().memClear();
+				focus();
 			}
 		
 		};
 		MiscButton memR = new MiscButton("MR",out,Color.red){
 			public void mousePressed(MouseEvent e){
 				getOut().memRecall();
+				focus();
 			}
 		};
 		MiscButton memS = new MiscButton("MS",out,Color.red){
 			public void mousePressed(MouseEvent e){
 				getOut().memStore();
+				focus();
 			}
 		};
-		MiscButton memPlus = new MiscButton("M+",out,Color.red){};
+		MiscButton memPlus = new MiscButton("M+",out,Color.red){
+			public void mousePressed(MouseEvent e){
+				getOut().memPlus();
+				focus();
+			}
+		};
 		numberPanel.add(memclear,0,0);
 		numberPanel.add(memR,numberPanel.thisX(),numberPanel.nextY());
 		numberPanel.add(memS,numberPanel.thisX(),numberPanel.nextY());
@@ -223,6 +222,7 @@ public class CalcMainPanel {
 		numberPanel.add(new MiscButton("+/-",out,Color.blue){
 			public void mousePressed(MouseEvent arg0){
 				getOut().negate();
+				focus();
 			}
 		},numberPanel.nextX(),numberPanel.thisY());
 		numberPanel.add(new NumberButton(".",out,Color.blue),numberPanel.nextX(),numberPanel.thisY());
@@ -280,12 +280,14 @@ public class CalcMainPanel {
 				getOut().setCurrentLine(""+Math.sqrt(Double.parseDouble(getOut().currentLine())));
 				getOut().shouldclear = true;
 				getOut().updateLabel();
+				focus();
 			}
 		},numberPanel.nextX(),0);
 
 		
 		numberPanel.add(new MiscButton("%",out,Color.blue){
 			public void mousePressed(MouseEvent e){
+				focus();
 			}
 		},numberPanel.thisX(),numberPanel.nextY());
 		
@@ -294,6 +296,7 @@ public class CalcMainPanel {
 			getOut().setCurrentLine(""+1/Double.parseDouble(getOut().currentLine()));
 			getOut().shouldclear = true;
 			getOut().updateLabel();
+			focus();
 			}
 		},numberPanel.thisX(),numberPanel.nextY());
 		

@@ -10,6 +10,7 @@ public abstract class OperationButton extends MiscButton {
 	}
 	public void mousePressed(MouseEvent arg0){
 		getOut().storeOperation(getOperation());
+		super.mousePressed(arg0);
 	}
 	public abstract Operation getOperation();
 }

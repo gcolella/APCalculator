@@ -15,6 +15,7 @@ public class ExecuteButton extends MiscButton implements MouseListener
 		@Override
 		public void mousePressed(MouseEvent arg0) {
 			getOut().execute();
+			super.mousePressed(arg0);
 		}
 
 		@Override
