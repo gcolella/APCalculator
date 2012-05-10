@@ -19,7 +19,13 @@ import javax.swing.*;
 
 public class CalcMainPanel {
 	public static void main(String[] args){
-		try {
+	setUITheme();
+	JFrame theframe = setupFrame();
+	theframe.setResizable(false);
+	theframe.setVisible(true);
+	}
+	public static void setUITheme(){
+			try {
 			UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
@@ -34,15 +40,13 @@ public class CalcMainPanel {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	JFrame theframe = setupFrame();
-	theframe.setVisible(true);
 	}
 	public static JFrame setupFrame(){
 		JFrame theframe = new JFrame("Calculator");
 		theframe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		addComponents(theframe);
 		theframe.pack();
-		theframe.setSize(new Dimension(500,500));
+		theframe.setSize(new Dimension(260,265));
 		return theframe;
 	}
 	public static void addComponents(JFrame frame){
@@ -52,13 +56,14 @@ public class CalcMainPanel {
 		//===set up gridbag===
 		GridBagConstraints loc = new GridBagConstraints();
 		loc.fill = GridBagConstraints.BOTH;
-		loc.weightx = .5;
-		loc.weighty = .5;
+		loc.weightx = 1;
+		loc.weighty = .0;
 		loc.gridx = 0;
-		loc.gridx = 0;
+		loc.gridy = 0;
 		//=====================
 		
 		//===init the screen panel
+		loc.weighty = .00;
 		loc.gridy = 0;
 		loc.gridwidth = GridBagConstraints.REMAINDER;
 		JPanel screenPanel = new JPanel(new BorderLayout());
@@ -66,26 +71,24 @@ public class CalcMainPanel {
 		stuff.add(screenPanel,loc);
 		screenPanel.add(screen.getLabel(),BorderLayout.CENTER);
 		screenPanel.setBackground(Color.WHITE);
+		loc.weighty = .0;
 		//===================
 		
 		//===make the utility button panel
-		loc.gridx = 1;
+		loc.gridx = 0;
 		loc.gridy=1;
-		loc.weighty = .1;
+		loc.weighty = .0;
 		stuff.add(makeUtilPanel(screen),loc);
 		
-		loc.weighty = .5;
+		loc.weighty = .0;
 		loc.gridwidth = 1;
 		//================
 		
-		//===make the memory button panel
-		loc.gridx = 0;
-		loc.gridy = 2;
-		stuff.add(makeLeftPanel(screen),loc);
-		//=================
+
 		
 		//===make the number button panel
-		loc.gridx = 1;
+		loc.gridy = 2;
+		loc.gridx = 0;
 		stuff.add(makeNumberPanel(screen),loc);
 		//=====================
 		
@@ -115,11 +118,14 @@ public class CalcMainPanel {
 		};
 		MiscButton memR = new MiscButton("MR",out,Color.red){};
 		MiscButton memS = new MiscButton("MS",out,Color.red){};
+		MiscButton memPlus = new MiscButton("M+",out,Color.red){};
 		leftpanel.add(memclear,loc);
 		loc.gridy++;
 		leftpanel.add(memR,loc);
 		loc.gridy++;
 		leftpanel.add(memS,loc);
+		loc.gridy++;
+		leftpanel.add(memPlus,loc);
 		
 		
 		return leftpanel;
@@ -128,12 +134,18 @@ public class CalcMainPanel {
 	public static JPanel makeUtilPanel(OutDisplay out){
 		JPanel utilpanel = new JPanel(new GridBagLayout());
 		GridBagConstraints loc = new GridBagConstraints();
+		
 		loc.weightx = .5;
 		loc.weighty = .5;
 		loc.gridx = 0;
 		loc.gridy = 0;
 		loc.fill = GridBagConstraints.BOTH;
 		loc.anchor = GridBagConstraints.WEST;
+		
+		utilpanel.add(out.getMemoryLabel(),loc);
+		
+		
+		loc.gridx++;
 		MiscButton backspace = new MiscButton("Backspace",out,Color.red) {
 			public void mousePressed(MouseEvent e){
 			getOut().backspace();	
@@ -154,6 +166,7 @@ public class CalcMainPanel {
 				getOut().clearLine();
 			}
 		};
+		
 		loc.gridx++;
 		utilpanel.add(clearE,loc);
 		
@@ -163,20 +176,44 @@ public class CalcMainPanel {
 	public static JPanel makeNumberPanel(OutDisplay out){
 		JPanel numberPanel = new JPanel(new GridBagLayout());
 		GridBagConstraints loc = new GridBagConstraints();
-		loc.insets = new Insets(5,5,5,5);
+		loc.insets = new Insets(2,2,2,2);
+		loc.ipadx = 10;
+		loc.ipady = 10;
+
+		loc.fill = GridBagConstraints.BOTH;
 		loc.weightx = .5;
 		loc.weighty = .5;
+		loc.gridx = 0;
+		loc.gridy = 0;
 		loc.fill = GridBagConstraints.BOTH;
+		loc.insets = new Insets(2,2,2,2);
+		MiscButton memclear = new MiscButton("MC",out,Color.red) {
+		};
+		MiscButton memR = new MiscButton("MR",out,Color.red){};
+		MiscButton memS = new MiscButton("MS",out,Color.red){};
+		MiscButton memPlus = new MiscButton("M+",out,Color.red){};
+		numberPanel.add(memclear,loc);
+		loc.gridy++;
+		numberPanel.add(memR,loc);
+		loc.gridy++;
+		numberPanel.add(memS,loc);
+		loc.gridy++;
+		numberPanel.add(memPlus,loc);
+		
+		
+		
+		
+		//Here are all the numbers.
 		for(int i=1;i<4;i++){
 			for(int j=0;j<3;j++){
 				int num = i+(3*j);
-				loc.gridx=i-1;
+				loc.gridx=1+i-1;
 				loc.gridy=j;
 				numberPanel.add(new NumberButton(""+num,out,Color.blue),loc);
 			}
 		}
 		loc.gridy++;
-		loc.gridx = 0;
+		loc.gridx = 1;
 		numberPanel.add(new NumberButton(""+0,out,Color.blue),loc);
 		loc.gridx++;
 		numberPanel.add(new MiscButton("+/-",out,Color.blue){
@@ -191,10 +228,8 @@ public class CalcMainPanel {
 		
 		
 		//start operations
-		loc.weightx = .5;
-		loc.weighty = .5;
 		loc.fill = GridBagConstraints.BOTH;
-		loc.gridx = 3;
+		loc.gridx = 4;
 		loc.gridy = 3;
 		numberPanel.add(new OperationButton("+",out,Color.red){
 			public Operation getOperation() {
@@ -253,8 +288,7 @@ public class CalcMainPanel {
 		},loc);
 		loc.gridy++;
 		
-		
-		//numberPanel.add(new ExecuteButton("=",out,Color.red),loc);
+		numberPanel.add(new ExecuteButton("=",out,Color.red),loc);
 		
 		return numberPanel;
 	}

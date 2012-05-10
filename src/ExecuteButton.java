@@ -14,7 +14,7 @@ public class ExecuteButton extends JButton implements MouseListener
 		public ExecuteButton(String text, OutDisplay out, Color clr){
 			super(text);
 			setForeground(clr);
-			setFont(new Font("Dialog",Font.PLAIN,30));
+			setFont(new Font("Dialog",Font.PLAIN,15));
 			txt = text;
 			addMouseListener(this);
 			this.out = out;

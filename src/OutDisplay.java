@@ -4,13 +4,16 @@ import java.awt.Font;
 import java.awt.Label;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.awt.Color;
+import javax.swing.BorderFactory;
+
 
 import javax.swing.SwingUtilities;
 
 public class OutDisplay
 {
 	
-	
+	private Label memorylabel;
 	private Label mylabel;
 	private String line;
 	public boolean shouldclear;
@@ -21,9 +24,15 @@ public class OutDisplay
 	public OutDisplay(){
 		line = "";
 		mylabel = new Label("0");
-		mylabel.setFont(new Font("Dialog",Font.PLAIN,30));
+		mylabel.setFont(new Font("Dialog",Font.PLAIN,15));
 		mylabel.setAlignment(Label.RIGHT);
+		memorylabel = new Label(" ");
+		memorylabel.setPreferredSize(new Dimension(10,50));
+	//	memorylabel.setBorder(BorderFactory.createLineBorder(Color.black));
 
+	}
+	public Label getMemoryLabel(){
+	return memorylabel;
 	}
 	public Label getLabel(){
 		return mylabel;
@@ -74,8 +83,13 @@ public class OutDisplay
 	
 	public void storeOperation(Operation o){
 		first = Double.parseDouble(line);
-		clear();
+		shouldclear = true;
 		currentop = o;
+	}
+	public void setMemory(boolean mem){
+	memorylabel.setText(mem?"M":" ");
+	
+	
 	}
 	
 }	

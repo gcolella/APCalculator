@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.*;
 
 import javax.swing.JButton;
 
@@ -17,10 +18,11 @@ public class MiscButton extends JButton implements MouseListener
 		String txt;
 		public MiscButton(String text, OutDisplay out, Color clr){
 			super(text);
-			setFont(new Font("Dialog",Font.PLAIN,30));
+			setFont(new Font("Dialog",Font.PLAIN,12));
 			setForeground(clr);
 			txt = text;
 			addMouseListener(this);
+			setMargin(new Insets(1,1,1,1));
 			this.out = out;
 		}
 		public OutDisplay getOut(){
