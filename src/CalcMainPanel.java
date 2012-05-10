@@ -215,7 +215,7 @@ public class CalcMainPanel {
 		int x = numberPanel.thisX();
 		for(int i=1;i<4;i++){
 			for(int j=0;j<3;j++){
-				int num = 10-(i+(3*j));
+				int num = 10-((4-i)+(3*j));
 				numberPanel.add(new NumberButton(""+num,out,Color.blue),x+i,j);
 			}
 		}
