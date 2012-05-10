@@ -57,13 +57,14 @@ public class CalcMainPanel {
 		GridBagConstraints loc = new GridBagConstraints();
 		loc.fill = GridBagConstraints.BOTH;
 		loc.weightx = 1;
-		loc.weighty = .0;
+		loc.weighty = 1;
 		loc.gridx = 0;
 		loc.gridy = 0;
+		loc.insets = new Insets(5,5,0,5);
 		//=====================
 		
 		//===init the screen panel
-		loc.weighty = .00;
+		//loc.weighty = 1;
 		loc.gridy = 0;
 		loc.gridwidth = GridBagConstraints.REMAINDER;
 		JPanel screenPanel = new JPanel(new BorderLayout());
@@ -72,15 +73,16 @@ public class CalcMainPanel {
 		screenPanel.add(screen.getLabel(),BorderLayout.CENTER);
 		screenPanel.setBackground(Color.WHITE);
 		loc.weighty = .0;
+		//loc.insets = new Insets(5,0,0,0);
 		//===================
 		
 		//===make the utility button panel
 		loc.gridx = 0;
 		loc.gridy=1;
-		loc.weighty = .0;
+		loc.weighty = .5;
 		stuff.add(makeUtilPanel(screen),loc);
 		
-		loc.weighty = .0;
+		loc.weighty = 1;
 		loc.gridwidth = 1;
 		//================
 		
@@ -98,68 +100,73 @@ public class CalcMainPanel {
 		frame.setJMenuBar(makeMenuBar());
 	}
 	public static JMenuBar makeMenuBar(){
+		ButtonGroup views = new ButtonGroup();
 		JMenuBar menubar = new JMenuBar();
-		JMenu test = new JMenu("Test");
-		menubar.add(test);
-		JMenuItem test2 = new JMenuItem("Test2");
-		test.add(test2);
+		JMenu edit = new JMenu("Edit");
+		JMenu view = new JMenu("View");
+		JMenu help = new JMenu("Help");
+		menubar.add(edit);
+		menubar.add(view);
+		menubar.add(help);
+		JMenuItem copy = new JMenuItem("Copy");
+		JMenuItem paste = new JMenuItem("Paste");
+		edit.add(copy);
+		edit.add(paste);
+		JRadioButtonMenuItem standard = new JRadioButtonMenuItem("Standard");
+		JRadioButtonMenuItem scientific = new JRadioButtonMenuItem("Scientific");
+		JMenuItem digit = new JMenuItem("Digit grouping");
+		
+		views.add(standard);
+		views.add(scientific);
+		view.add(standard);
+		view.add(scientific);
+		view.add(digit);
+		
+		JMenuItem helpb = new JMenuItem("Help Topics");
+		JMenuItem about = new JMenuItem("About Calculator");
+		help.add(helpb);
+		help.add(about);
+		
 		return menubar;
 	}
 	public static JPanel makeLeftPanel(OutDisplay out){
-		JPanel leftpanel = new JPanel(new GridBagLayout());
+		GridPanel leftpanel = new GridPanel();
 		GridBagConstraints loc = new GridBagConstraints();
-		loc.weightx = .5;
-		loc.weighty = .5;
-		loc.gridx = 0;
-		loc.gridy = 0;
-		loc.fill = GridBagConstraints.BOTH;
-		loc.insets = new Insets(5,5,5,5);
+		leftpanel.setWeights(.5, .5);
+		leftpanel.setInsets(new Insets(5,0,5,5));
 		MiscButton memclear = new MiscButton("MC",out,Color.red) {
 		};
 		MiscButton memR = new MiscButton("MR",out,Color.red){};
 		MiscButton memS = new MiscButton("MS",out,Color.red){};
 		MiscButton memPlus = new MiscButton("M+",out,Color.red){};
-		leftpanel.add(memclear,loc);
-		loc.gridy++;
-		leftpanel.add(memR,loc);
-		loc.gridy++;
-		leftpanel.add(memS,loc);
-		loc.gridy++;
-		leftpanel.add(memPlus,loc);
-		
-		
+		leftpanel.add(memclear,0,0);
+		leftpanel.add(memR,0,1);
+		leftpanel.add(memS,0,2);
+		leftpanel.add(memPlus,0,3);
 		return leftpanel;
 		
 	}
 	public static JPanel makeUtilPanel(OutDisplay out){
-		JPanel utilpanel = new JPanel(new GridBagLayout());
-		GridBagConstraints loc = new GridBagConstraints();
-		
-		loc.weightx = .5;
-		loc.weighty = .5;
-		loc.gridx = 0;
-		loc.gridy = 0;
-		loc.fill = GridBagConstraints.BOTH;
-		loc.anchor = GridBagConstraints.WEST;
-		
-		utilpanel.add(out.getMemoryLabel(),loc);
-		
-		
-		loc.gridx++;
+		GridPanel utilpanel = new GridPanel();
+		utilpanel.setWeights(.5, .5);
+		utilpanel.setFill(true);
+		utilpanel.getConstraint().anchor = GridBagConstraints.WEST;
+		utilpanel.setInsets(new Insets(0,10,0,10));
+		utilpanel.add(out.getMemoryLabel(),0,0);
+		utilpanel.setInsets(new Insets(0,2,0,2));
 		MiscButton backspace = new MiscButton("Backspace",out,Color.red) {
 			public void mousePressed(MouseEvent e){
 			getOut().backspace();	
 			}
 		};
-		utilpanel.add(backspace,loc);
+		utilpanel.add(backspace,utilpanel.nextX(),0);
 		
 		MiscButton clear = new MiscButton("C",out,Color.red) {
 			public void mousePressed(MouseEvent e){
 				getOut().clear();
 			}
 		};
-		loc.gridx++;
-		utilpanel.add(clear,loc);
+		utilpanel.add(clear,utilpanel.nextX(),0);
 		
 		MiscButton clearE = new MiscButton("CE",out,Color.red) {
 			public void mousePressed(MouseEvent e){
@@ -167,70 +174,63 @@ public class CalcMainPanel {
 			}
 		};
 		
-		loc.gridx++;
-		utilpanel.add(clearE,loc);
+		utilpanel.add(clearE,utilpanel.nextX(),0);
 		
 		return utilpanel;
 	}
 
 	public static JPanel makeNumberPanel(OutDisplay out){
-		JPanel numberPanel = new JPanel(new GridBagLayout());
-		GridBagConstraints loc = new GridBagConstraints();
-		loc.insets = new Insets(2,2,2,2);
-		loc.ipadx = 10;
-		loc.ipady = 10;
-
-		loc.fill = GridBagConstraints.BOTH;
-		loc.weightx = .5;
-		loc.weighty = .5;
-		loc.gridx = 0;
-		loc.gridy = 0;
-		loc.fill = GridBagConstraints.BOTH;
-		loc.insets = new Insets(2,2,2,2);
+		GridPanel numberPanel = new GridPanel();
+		numberPanel.setInsets(new Insets(2,2,2,2));
+		numberPanel.getConstraint().ipadx = 10;
+		numberPanel.getConstraint().ipady = 10;
+		numberPanel.setFill(true);
+		numberPanel.setWeights(.5,.5);
 		MiscButton memclear = new MiscButton("MC",out,Color.red) {
+			public void mousePressed(MouseEvent e){
+				getOut().memClear();
+			}
+		
 		};
-		MiscButton memR = new MiscButton("MR",out,Color.red){};
-		MiscButton memS = new MiscButton("MS",out,Color.red){};
+		MiscButton memR = new MiscButton("MR",out,Color.red){
+			public void mousePressed(MouseEvent e){
+				getOut().memRecall();
+			}
+		};
+		MiscButton memS = new MiscButton("MS",out,Color.red){
+			public void mousePressed(MouseEvent e){
+				getOut().memStore();
+			}
+		};
 		MiscButton memPlus = new MiscButton("M+",out,Color.red){};
-		numberPanel.add(memclear,loc);
-		loc.gridy++;
-		numberPanel.add(memR,loc);
-		loc.gridy++;
-		numberPanel.add(memS,loc);
-		loc.gridy++;
-		numberPanel.add(memPlus,loc);
+		numberPanel.add(memclear,0,0);
+		numberPanel.add(memR,numberPanel.thisX(),numberPanel.nextY());
+		numberPanel.add(memS,numberPanel.thisX(),numberPanel.nextY());
+		numberPanel.add(memPlus,numberPanel.thisX(),numberPanel.nextY());
 		
 		
 		
 		
 		//Here are all the numbers.
+		int x = numberPanel.thisX();
 		for(int i=1;i<4;i++){
 			for(int j=0;j<3;j++){
-				int num = i+(3*j);
-				loc.gridx=1+i-1;
-				loc.gridy=j;
-				numberPanel.add(new NumberButton(""+num,out,Color.blue),loc);
+				int num = 10-(i+(3*j));
+				numberPanel.add(new NumberButton(""+num,out,Color.blue),x+i,j);
 			}
 		}
-		loc.gridy++;
-		loc.gridx = 1;
-		numberPanel.add(new NumberButton(""+0,out,Color.blue),loc);
-		loc.gridx++;
+		numberPanel.add(new NumberButton(""+0,out,Color.blue),1,numberPanel.nextY());
 		numberPanel.add(new MiscButton("+/-",out,Color.blue){
 			public void mousePressed(MouseEvent arg0){
 				getOut().negate();
 			}
-		},loc);
-		loc.gridx++;
-		numberPanel.add(new NumberButton(".",out,Color.blue),loc);
+		},numberPanel.nextX(),numberPanel.thisY());
+		numberPanel.add(new NumberButton(".",out,Color.blue),numberPanel.nextX(),numberPanel.thisY());
 		//end numbers
 		
 		
 		
 		//start operations
-		loc.fill = GridBagConstraints.BOTH;
-		loc.gridx = 4;
-		loc.gridy = 3;
 		numberPanel.add(new OperationButton("+",out,Color.red){
 			public Operation getOperation() {
 				// TODO Auto-generated method stub
@@ -241,8 +241,7 @@ public class CalcMainPanel {
 					}
 				};
 			}
-		},loc);
-		loc.gridy=2;
+		},4,3);
 		numberPanel.add(new OperationButton("-",out,Color.red){
 			public Operation getOperation() {
 				// TODO Auto-generated method stub
@@ -253,8 +252,7 @@ public class CalcMainPanel {
 					}
 				};
 			}
-		},loc);
-		loc.gridy=1;
+		},4,2);
 		numberPanel.add(new OperationButton("*",out,Color.red){
 			public Operation getOperation() {
 				// TODO Auto-generated method stub
@@ -265,8 +263,7 @@ public class CalcMainPanel {
 					}
 				};
 			}
-		},loc);
-		loc.gridy=0;
+		},4,1);
 		numberPanel.add(new OperationButton("/",out,Color.red){
 			public Operation getOperation() {
 				// TODO Auto-generated method stub
@@ -277,19 +274,30 @@ public class CalcMainPanel {
 					}
 				};
 			}
-		},loc);
-		loc.gridx++;
+		},4,0);
 		numberPanel.add(new MiscButton("sqrt",out,Color.blue){
 			public void mousePressed(MouseEvent e){
 				getOut().setCurrentLine(""+Math.sqrt(Double.parseDouble(getOut().currentLine())));
 				getOut().shouldclear = true;
 				getOut().updateLabel();
 			}
-		},loc);
-		loc.gridy++;
+		},numberPanel.nextX(),0);
+
 		
-		numberPanel.add(new ExecuteButton("=",out,Color.red),loc);
+		numberPanel.add(new MiscButton("%",out,Color.blue){
+			public void mousePressed(MouseEvent e){
+			}
+		},numberPanel.thisX(),numberPanel.nextY());
 		
+		numberPanel.add(new MiscButton("1/x",out,Color.blue){
+			public void mousePressed(MouseEvent e){
+			getOut().setCurrentLine(""+1/Double.parseDouble(getOut().currentLine()));
+			getOut().shouldclear = true;
+			getOut().updateLabel();
+			}
+		},numberPanel.thisX(),numberPanel.nextY());
+		
+		numberPanel.add(new ExecuteButton("=",out,Color.red),numberPanel.thisX(),numberPanel.nextY());
 		return numberPanel;
 	}
 	

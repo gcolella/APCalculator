@@ -1,11 +1,11 @@
 
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.Label;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.awt.Color;
 import javax.swing.BorderFactory;
+import javax.swing.JLabel;
 
 
 import javax.swing.SwingUtilities;
@@ -13,34 +13,59 @@ import javax.swing.SwingUtilities;
 public class OutDisplay
 {
 	
-	private Label memorylabel;
-	private Label mylabel;
+	private JLabel memorylabel;
+	private JLabel mylabel;
 	private String line;
 	public boolean shouldclear;
 	private Operation currentop;
 	private double second;
 	private double first;
+	private double memory;
+	
 	
 	public OutDisplay(){
-		line = "";
-		mylabel = new Label("0");
+		line = " ";
+		mylabel = new JLabel("0");
 		mylabel.setFont(new Font("Dialog",Font.PLAIN,15));
-		mylabel.setAlignment(Label.RIGHT);
-		memorylabel = new Label(" ");
-		memorylabel.setPreferredSize(new Dimension(10,50));
-	//	memorylabel.setBorder(BorderFactory.createLineBorder(Color.black));
+		mylabel.setHorizontalAlignment(JLabel.RIGHT);
+		mylabel.setBorder(BorderFactory.createLoweredBevelBorder());
+		
+		memorylabel = new JLabel(" ");
+		memorylabel.setHorizontalAlignment(JLabel.CENTER);
+		memorylabel.setPreferredSize(new Dimension(10,20));
+		memorylabel.setBorder(BorderFactory.createLoweredBevelBorder());
+		memory = 0;
 
 	}
-	public Label getMemoryLabel(){
+	public JLabel getMemoryLabel(){
 	return memorylabel;
 	}
-	public Label getLabel(){
+	public JLabel getLabel(){
 		return mylabel;
 	}
 	public void updateLabel(){
 		mylabel.setText(line);
 	}
 
+	public void memRecall(){
+		line = memory+"";
+		updateLabel();
+	}
+	public void memClear(){
+		memory = 0;
+		setMemory(false);
+	}
+	public void memStore(){
+		memory = Double.parseDouble(line);
+		setMemory(true);
+		shouldclear = true;
+	}
+	public void memPlus(){
+		memory+=Double.parseDouble(line);
+		shouldclear = true;
+		setMemory(true);
+	}
+	
 	public void add(String s){
 		if(shouldclear)
 			clearLine();
@@ -55,11 +80,13 @@ public class OutDisplay
 	}
 	public void backspace(){
 		String current = currentLine();
+		if(currentLine().equals(" "))
+			return;
 		setCurrentLine(current.substring(0, current.length()-1));
 		updateLabel();
 	}
 	public void clearLine(){
-		line = "";
+		line = " ";
 		shouldclear = false;
 		updateLabel();
 	}
@@ -71,6 +98,8 @@ public class OutDisplay
 	}
 	public void clear(){
 		clearLine();
+		currentop = null;
+		
 	}
 	public void negate(){
 		if(line.startsWith("-"))

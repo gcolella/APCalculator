@@ -18,11 +18,11 @@ public class MiscButton extends JButton implements MouseListener
 		String txt;
 		public MiscButton(String text, OutDisplay out, Color clr){
 			super(text);
-			setFont(new Font("Dialog",Font.PLAIN,12));
+			setFont(new Font("Dialog",Font.PLAIN,11));
 			setForeground(clr);
 			txt = text;
 			addMouseListener(this);
-			setMargin(new Insets(1,1,1,1));
+			setMargin(new Insets(1,2,1,2));
 			this.out = out;
 		}
 		public OutDisplay getOut(){
