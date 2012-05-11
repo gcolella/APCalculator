@@ -127,7 +127,7 @@ public class OutDisplay implements KeyListener
 	}
 	@Override
 	public void keyTyped(KeyEvent arg0) {
-		// TODO Auto-generated method stub
+		
 		
 	}
 	@Override
@@ -143,32 +143,63 @@ public class OutDisplay implements KeyListener
 	if(key.equals("*"))
 		storeOperation(new Operation(){
 					public double apply(double a, double b) {
-						// TODO Auto-generated method stub
+						
 						return a*b;
+					}
+
+					@Override
+					String getName() {
+						
+						return "MULT";
 					}});
 	if(key.equals("+"))
 		storeOperation(new Operation(){
 			public double apply(double a, double b) {
-				// TODO Auto-generated method stub
+				
 				return a+b;
+			}
+
+			@Override
+			String getName() {
+				
+				return "ADD";
 			}});
 	if(key.equals("-"))
 		storeOperation(new Operation(){
 			public double apply(double a, double b) {
-				// TODO Auto-generated method stub
+				
 				return a-b;
+			}
+
+			@Override
+			String getName() {
+				
+				return "SUB";
 			}});
 	if(key.equals("/"))
 		storeOperation(new Operation(){
 			public double apply(double a, double b) {
-				// TODO Auto-generated method stub
+				
 				return a/b;
+			}
+
+			@Override
+			String getName() {
+				
+				return "DIV";
 			}});
 	if(arg0.getKeyCode() == KeyEvent.VK_ENTER)
 		execute();
 	if(arg0.getKeyCode()==KeyEvent.VK_DELETE || arg0.getKeyCode()==KeyEvent.VK_BACK_SPACE)
 		backspace();
 	}
+	public void percentKey(){
+		double first = currentop.first;
+		line = (first*(Double.parseDouble(line)/100))+"";
+		updateLabel();
+	}
+	
+	
 	public boolean isValid(String s){
 		String valids = "123456789890.";
 		return valids.indexOf(s)!=-1;

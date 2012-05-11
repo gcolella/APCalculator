@@ -233,44 +233,68 @@ public class CalcMainPanel {
 		//start operations
 		numberPanel.add(new OperationButton("+",out,Color.red){
 			public Operation getOperation() {
-				// TODO Auto-generated method stub
+				
 				return new Operation(){
 					public double apply(double a, double b) {
-						// TODO Auto-generated method stub
+						
 						return a+b;
+					}
+
+					@Override
+					String getName() {
+						
+						return "ADD";
 					}
 				};
 			}
 		},4,3);
 		numberPanel.add(new OperationButton("-",out,Color.red){
 			public Operation getOperation() {
-				// TODO Auto-generated method stub
+				
 				return new Operation(){
 					public double apply(double a, double b) {
-						// TODO Auto-generated method stub
+						
 						return a-b;
+					}
+
+					@Override
+					String getName() {
+						
+						return "SUB";
 					}
 				};
 			}
 		},4,2);
 		numberPanel.add(new OperationButton("*",out,Color.red){
 			public Operation getOperation() {
-				// TODO Auto-generated method stub
+				
 				return new Operation(){
 					public double apply(double a, double b) {
-						// TODO Auto-generated method stub
+						
 						return a*b;
+					}
+
+					@Override
+					String getName() {
+						
+						return "MULT";
 					}
 				};
 			}
 		},4,1);
 		numberPanel.add(new OperationButton("/",out,Color.red){
 			public Operation getOperation() {
-				// TODO Auto-generated method stub
+				
 				return new Operation(){
 					public double apply(double a, double b) {
-						// TODO Auto-generated method stub
+						
 						return a/b;
+					}
+
+					@Override
+					String getName() {
+						
+						return "DIV";
 					}
 				};
 			}
@@ -287,6 +311,7 @@ public class CalcMainPanel {
 		
 		numberPanel.add(new MiscButton("%",out,Color.blue){
 			public void mousePressed(MouseEvent e){
+				getOut().percentKey();
 				focus();
 			}
 		},numberPanel.thisX(),numberPanel.nextY());
