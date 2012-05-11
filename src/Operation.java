@@ -1,4 +1,17 @@
 
-public interface Operation {
-abstract double apply(double a, double b);
+public abstract class Operation {
+	boolean complete = false;
+	double first,second;
+	abstract double apply(double a, double b);
+	void setFirst(double one){
+		first = one;
+	}
+	void setSecond(double sec){
+		second = sec;
+		complete = true;
+	}
+	boolean isComplete(){
+		return complete;
+	}
+
 }

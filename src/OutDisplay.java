@@ -96,8 +96,10 @@ public class OutDisplay implements KeyListener
 		updateLabel();
 	}
 	public void execute(){
-		second = Double.parseDouble(line);
-		line = ""+currentop.apply(first, second);
+		if(!currentop.isComplete())
+			currentop.setSecond(Double.parseDouble(line));
+		line = ""+currentop.apply(currentop.first, currentop.second);
+		currentop.setFirst(currentop.apply(currentop.first,currentop.second));
 		updateLabel();
 		shouldclear = true;
 	}
@@ -110,13 +112,13 @@ public class OutDisplay implements KeyListener
 		if(line.startsWith("-"))
 			line = line.substring(1);
 		else
-			line = "-"+line;
+			line = "-"+line.substring(1);
 		updateLabel();
 	}
 	
 	
 	public void storeOperation(Operation o){
-		first = Double.parseDouble(line);
+		o.setFirst(Double.parseDouble(line));
 		shouldclear = true;
 		currentop = o;
 	}
@@ -164,6 +166,8 @@ public class OutDisplay implements KeyListener
 			}});
 	if(arg0.getKeyCode() == KeyEvent.VK_ENTER)
 		execute();
+	if(arg0.getKeyCode()==KeyEvent.VK_DELETE || arg0.getKeyCode()==KeyEvent.VK_BACK_SPACE)
+		backspace();
 	}
 	public boolean isValid(String s){
 		String valids = "123456789890.";
