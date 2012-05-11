@@ -150,14 +150,6 @@ public class CalcMainPanel {
 		};
 		utilpanel.add(backspace,utilpanel.nextX(),0);
 		
-		MiscButton clear = new MiscButton("C",out,Color.red) {
-			public void mousePressed(MouseEvent e){
-				getOut().clear();
-				focus();
-			}
-		};
-		utilpanel.add(clear,utilpanel.nextX(),0);
-		
 		MiscButton clearE = new MiscButton("CE",out,Color.red) {
 			public void mousePressed(MouseEvent e){
 				getOut().clearLine();
@@ -166,6 +158,14 @@ public class CalcMainPanel {
 		};
 		
 		utilpanel.add(clearE,utilpanel.nextX(),0);
+		MiscButton clear = new MiscButton("C",out,Color.red) {
+			public void mousePressed(MouseEvent e){
+				getOut().clear();
+				focus();
+			}
+		};
+		utilpanel.add(clear,utilpanel.nextX(),0);
+
 		
 		return utilpanel;
 	}

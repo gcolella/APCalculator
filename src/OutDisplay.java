@@ -47,7 +47,7 @@ public class OutDisplay implements KeyListener
 		return mylabel;
 	}
 	public void updateLabel(){
-		mylabel.setText(line);
+		mylabel.setText(format(line));
 	}
 
 	public void memRecall(){
@@ -118,6 +118,9 @@ public class OutDisplay implements KeyListener
 	
 	
 	public void storeOperation(Operation o){
+		if(currentop != null && !currentop.isComplete()){
+			execute();
+		}
 		o.setFirst(Double.parseDouble(line));
 		shouldclear = true;
 		currentop = o;
@@ -188,10 +191,18 @@ public class OutDisplay implements KeyListener
 				
 				return "DIV";
 			}});
+	if(key.equals("%"))
+		percentKey();
 	if(arg0.getKeyCode() == KeyEvent.VK_ENTER)
 		execute();
-	if(arg0.getKeyCode()==KeyEvent.VK_DELETE || arg0.getKeyCode()==KeyEvent.VK_BACK_SPACE)
+	if(arg0.getKeyCode()==KeyEvent.VK_BACK_SPACE)
 		backspace();
+	if(arg0.getKeyCode()==KeyEvent.VK_ESCAPE){
+		clearLine();
+		memClear();
+	}
+	if(arg0.getKeyCode()==KeyEvent.VK_DELETE)
+		clearLine();
 	}
 	public void percentKey(){
 		double first = currentop.first;
@@ -199,6 +210,11 @@ public class OutDisplay implements KeyListener
 		updateLabel();
 	}
 	
+	public String format(String in){
+		if(in.endsWith(".0"))
+			return in.substring(0,in.length()-2);
+		return in;
+	}
 	
 	public boolean isValid(String s){
 		String valids = "123456789890.";
