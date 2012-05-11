@@ -212,7 +212,7 @@ public class OutDisplay implements KeyListener
 	
 	public String format(String in){
 		if(in.endsWith(".0"))
-			return in.substring(0,in.length()-2);
+			return in.substring(0,in.length()-1);
 		return in;
 	}
 	
