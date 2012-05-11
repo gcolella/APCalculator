@@ -14,6 +14,9 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.awt.datatransfer.*;
+import java.awt.Toolkit;
+import java.io.IOException; 
 
 import javax.swing.*;
 
@@ -113,14 +116,74 @@ public class CalcMainPanel {
 		menubar.add(edit);
 		menubar.add(view);
 		menubar.add(help);
-		JMenuItem copy = new JMenuItem("Copy");
 		JMenuItem paste = new JMenuItem("Paste");
+		paste.addMouseListener(
+			new MouseListener() {
+			public void mousePressed(MouseEvent e){
+			String result = "";
+			Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+			Transferable contents = clipboard.getContents(null);
+			 boolean hasTransferableText = (contents != null) && contents.isDataFlavorSupported(DataFlavor.stringFlavor); 
+			 if ( hasTransferableText ) {
+			 	try{result = (String)contents.getTransferData(DataFlavor.stringFlavor);}
+					catch(UnsupportedFlavorException ex){}
+					catch(IOException ex){}
+				try{result = Double.parseDouble(result)+"";
+						     	screen.setCurrentLine(result);}
+								catch(NumberFormatException ex){}
+			}
+	
+			screen.updateLabel();
+			}
+		@Override
+		public void mouseEntered(MouseEvent arg0) {}
+		@Override
+		public void mouseExited(MouseEvent arg0) {}
+		@Override
+		public void mouseClicked(MouseEvent arg0) {}
+		@Override
+		public void mouseReleased(MouseEvent arg0) {}
+			});
+		
+		JMenuItem copy = new JMenuItem("Copy");
+		copy.addMouseListener(
+					new MouseListener() {
+			public void mousePressed(MouseEvent e){
+			StringSelection toBoard = new StringSelection( screen.currentLine() );
+			Clipboard clip = Toolkit.getDefaultToolkit().getSystemClipboard();
+			clip.setContents( toBoard, new ClipboardOwner(){ 
+			public void lostOwnership( Clipboard aClipboard, Transferable aContents) {}
+			} ); 
+			}
+		@Override
+		public void mouseEntered(MouseEvent arg0) {}
+		@Override
+		public void mouseExited(MouseEvent arg0) {}
+		@Override
+		public void mouseClicked(MouseEvent arg0) {}
+		@Override
+		public void mouseReleased(MouseEvent arg0) {}
+			});
 		edit.add(copy);
 		edit.add(paste);
 		JRadioButtonMenuItem standard = new JRadioButtonMenuItem("Standard");
 		JRadioButtonMenuItem scientific = new JRadioButtonMenuItem("Scientific");
 		JMenuItem digit = new JMenuItem("Digit grouping");
-		
+		digit.addMouseListener(
+			new MouseListener() {
+			public void mousePressed(MouseEvent e){
+			screen.toggleDigits();
+			screen.updateLabel();
+			}
+		@Override
+		public void mouseEntered(MouseEvent arg0) {}
+		@Override
+		public void mouseExited(MouseEvent arg0) {}
+		@Override
+		public void mouseClicked(MouseEvent arg0) {}
+		@Override
+		public void mouseReleased(MouseEvent arg0) {}
+			});
 		views.add(standard);
 		views.add(scientific);
 		view.add(standard);
@@ -152,7 +215,7 @@ public class CalcMainPanel {
 		
 		MiscButton clearE = new MiscButton("CE",out,Color.red) {
 			public void mousePressed(MouseEvent e){
-				getOut().clearLine();
+				getOut().zero();
 				focus();
 			}
 		};
@@ -160,7 +223,7 @@ public class CalcMainPanel {
 		utilpanel.add(clearE,utilpanel.nextX(),0);
 		MiscButton clear = new MiscButton("C",out,Color.red) {
 			public void mousePressed(MouseEvent e){
-				getOut().clear();
+				getOut().zero();
 				focus();
 			}
 		};

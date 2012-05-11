@@ -15,11 +15,11 @@ import javax.swing.SwingUtilities;
 
 public class OutDisplay implements KeyListener
 {
-	
+	private boolean digitGroup = true;
 	private JLabel memorylabel;
 	private JLabel mylabel;
 	private String line;
-	public boolean shouldclear;
+	public boolean shouldclear = false;
 	private Operation currentop;
 	private double second;
 	private double first;
@@ -212,13 +212,26 @@ public class OutDisplay implements KeyListener
 	
 	public String format(String in){
 		if(in.endsWith(".0"))
-			return in.substring(0,in.length()-1);
+			in = in.substring(0,in.length()-1);
+		if(digitGroup){
+			for(int pos=((in.indexOf(".")==-1)?in.length():in.indexOf("."))-3;pos>(in.indexOf(" ")==-1?0:1);pos-=3){
+				in = in.substring(0,pos)+","+in.substring(pos,in.length());
+				}
+			}
 		return in;
 	}
 	
 	public boolean isValid(String s){
 		String valids = "123456789890.";
 		return valids.indexOf(s)!=-1;
+	}
+	public void toggleDigits(){
+	 digitGroup = !digitGroup;
+	}
+	public void zero(){
+	 setCurrentLine(""+Double.parseDouble("0"));
+	 shouldclear = true;
+	 updateLabel();
 	}
 	
 }	
